@@ -1,4 +1,4 @@
-const distFolder = './dist';
+const distFolder = './docs';
 const srcFolder = './src';
 
 const config = {
