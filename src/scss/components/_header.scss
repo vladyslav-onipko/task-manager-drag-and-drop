@@ -1,0 +1,40 @@
+.header {
+    align-items: center;
+    background-color: $color-green;
+    box-shadow: 0px 15px 16px 0px rgba($color-black,0.75);
+    display: flex;
+    justify-content: center;
+    min-height: 150px;
+    position: relative;
+    text-align: center;
+
+    &__icon {
+        height: 100px;
+        position: absolute;
+        top: 0;
+        right: 2%;
+        transform: rotate(-90deg);
+        width: 100px;
+
+        @media screen and (max-width: 767px){
+            display: none;
+        }
+
+        svg {
+            fill: $color-white;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    &__title {
+        color: $color-white;
+        font-size: 4.5rem;
+    }
+
+    &__action {
+        bottom: 5%;
+        position: absolute;
+        right: 5%;
+    }
+}

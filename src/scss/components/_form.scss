@@ -1,0 +1,80 @@
+.form {
+    $this: &;
+
+    &__fieldset {
+        border: none;
+
+        &.is-radio-fieldset {
+            display: flex;
+            justify-content: space-around;
+
+            #{$this}__field {
+                align-items: center;
+            }
+        }
+    }
+
+    &__field {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__actions {
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    &__input {
+        border: 1px solid $color-gray;
+        margin: 20px 0;
+        padding: 10px;
+        width: 100%;
+
+        &:focus {
+            border-color: $color-green;
+        }
+
+        &.is-not-valid {
+            border: 1px solid $color-red;
+        }
+    }
+
+    &__input[type='radio'] {
+        cursor: pointer;
+        width: auto;
+    }
+
+    textarea {
+        max-height: 100px;
+        min-height: 100px;
+        max-width: 400px;
+        min-width: 400px;
+
+        @media screen and (max-width: 767px){
+            max-width: auto;
+            min-width: auto;
+        }
+    }
+
+    legend {
+        margin-bottom: 20px;
+    }
+
+    label {
+        cursor: pointer;
+        display: block;
+    }
+
+    &__submit[class] {
+        &[disabled] {
+            cursor: default;
+            opacity: 0.5;
+
+            &:focus,
+            &:hover {
+                box-shadow: none;
+            }
+        }
+    }
+}

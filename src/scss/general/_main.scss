@@ -1,0 +1,31 @@
+.main {
+    .content-wrapper {
+        display: flex;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 30px 20px;
+
+        @media screen and (max-width: 1199px){
+            flex-direction: column;
+        }
+    }
+
+    .success-box {
+        background-color: $color-green;
+        border: 1px solid $color-green;
+        border-radius: 20px;
+        box-shadow: 0px 0px 100px 0px rgba($color-green,0.75);
+        color: $color-white;
+        left: 50%;
+        padding: 30px;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-transform: uppercase;
+        z-index: 99999;
+
+        &.is-visible {
+            opacity: 1;
+        }
+    }
+}

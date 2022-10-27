@@ -1,0 +1,111 @@
+import { clearEvents, setToLocalStorage } from '../utils/utils.js'
+
+import Form from './form.js';
+
+export default class Task {
+    constructor(id, type, title, description) {
+        this.id = id;
+        this.type = type;
+        this.title = title;
+        this.description = description;
+
+        this.options = {
+            DOMElements: {},
+
+            classList: {
+                moveTaskBtnClass: 'js-move',
+                removeTaskBtnClass: 'js-remove',
+                editTaskBtnClass: 'js-edit',
+                confirmEditTaskBtnClass: 'js-edit-task',
+                taskElTitleClass: 'task__item-title',
+                taskElDescriptinClass: 'task__item-description',
+            }
+        }
+
+        this.form = new Form('js-edit-form');
+    }
+
+    taskEl = null;
+
+    initEvents(tasks, handler = {}) {
+        this.taskEl = document.getElementById(this.id);
+
+        const removeBtn = this.taskEl.querySelector(`.${this.options.classList.removeTaskBtnClass}`);
+        const moveBtn = this.taskEl.querySelector(`.${this.options.classList.moveTaskBtnClass}`);
+        const editBtn = this.taskEl.querySelector(`.${this.options.classList.editTaskBtnClass}`);
+        
+        removeBtn.addEventListener('click', handler.removeTask.bind(null, this.id));
+        moveBtn.addEventListener('click', handler.moveTask.bind(null, this.id));
+        editBtn.addEventListener('click', this.editHandler.bind(this, tasks));
+        this.taskEl.addEventListener('dragstart', this.dragHandler.bind(this));
+    }
+
+    editHandler(tasksArr) {
+        const oldData = {
+            title: this.title,
+            description: this.description,
+        };
+
+        let confirmEditBtn = this.form.submitBtn;
+        
+        confirmEditBtn = clearEvents(confirmEditBtn);
+        
+        if(!confirmEditBtn.hasAttribute('disabled')) {
+            confirmEditBtn.setAttribute('disabled', 'disabled');
+        }
+
+        this.form.setData(oldData);
+
+        confirmEditBtn.addEventListener('click', this.confirmEditHandler.bind(this, tasksArr));
+    }
+
+    confirmEditHandler(tasksArr) {
+        const taskTitleEl = this.taskEl.querySelector(`.${this.options.classList.taskElTitleClass}`);
+        const taskDescriptionEl = this.taskEl.querySelector(`.${this.options.classList.taskElDescriptinClass}`);
+
+        const currTask = tasksArr.find(task => task.id === this.id);
+        const newData = this.form.getData();
+
+        currTask.title = taskTitleEl.textContent = newData.title;
+        currTask.description = taskDescriptionEl.textContent = newData.description;
+        
+        setToLocalStorage(currTask.id, {type: currTask.type, title: currTask.title, description: currTask.description});
+
+        this.form.showSuccessMessage('updated');
+        this.form.submitBtn.setAttribute('disabled', 'disabled');
+    }
+
+    dragHandler(e) {
+        e.dataTransfer.setData('text/plain', this.id);
+        e.dataTransfer.effectAllowed = 'move';
+    }
+
+    create(anchor, options = {}) {
+        const html = `
+            <li class="task__item" id="${this.id}" draggable="true">
+                <span class="task__icon fas fa-times js-remove"></span>
+                <h4 class="task__item-title">${this.title}</h4>
+                <p class="task__item-description">${this.description}</p>
+                <div class="task__actions">
+                    <a class="btn is-secondary js-edit js-open-popup" href="#popup-edit">Edit</a>
+                    <button class="btn is-primary js-move"type="button">${this.type === 'active' ? 'Finish' : 'Activate'}</button>
+                </div>
+            </li>
+        `;
+
+        anchor.insertAdjacentHTML('beforeend', html);
+        this.initEvents(options.tasksArr, options.callback);
+    }
+
+    
+
+    static createEmpty(anchor, text = 'no tasks added yet') {
+        const html = `
+            <li class="task__item is-empty">
+                <p class="task__item-description">${text}</p>
+            </li>
+        `;
+        
+        anchor.insertAdjacentHTML('beforeend', html);
+    }
+};
