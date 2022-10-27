@@ -25,6 +25,7 @@ const html = () => {
     .pipe(nunjucksRender({
         path: `${srcFolder}/pages/`
     }))
+    .pipe(gulp.dest('./'))
     .pipe(htmlmin({
         collapseWhitespace: true
     }))
