@@ -28,6 +28,7 @@ const html = () => {
     .pipe(htmlmin({
         collapseWhitespace: true
     }))
+    .pipe(gulp.dest('./'))
     .pipe(gulp.dest(distFolder));
 };
 
