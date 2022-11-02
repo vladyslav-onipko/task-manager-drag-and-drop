@@ -77,6 +77,7 @@ export default class TaskList {
                 type: type,
                 title: data.title,
                 description: data.description,
+                deadline: data.deadline,
                 formatedDate: formatedDate,
                 createdDate: currDate,
             }
@@ -89,7 +90,8 @@ export default class TaskList {
                 {
                     type: taskData.type, 
                     title: taskData.title, 
-                    description: taskData.description, 
+                    description: taskData.description,
+                    deadline: data.deadline,
                     formatedDate: taskData.formatedDate,
                     createdDate: taskData.createdDate,
                 });
@@ -140,7 +142,8 @@ export default class TaskList {
             {
                 type: moveTask.type, 
                 title: moveTask.title, 
-                description: moveTask.description, 
+                description: moveTask.description,
+                deadline: moveTask.deadline,
                 formatedDate: moveTask.formatedDate, 
                 createdDate: moveTask.createdDate
             });

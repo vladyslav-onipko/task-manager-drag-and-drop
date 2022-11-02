@@ -33,12 +33,17 @@
         }
     }
 
-    &__date {
+    &__info {
         color: $color-gray;
+        display: flex;
         font-size: 1.2rem;
         position: absolute;
         right: 40px;
         top: 12px;
+    }
+
+    &__separator {
+        margin: 0 3px;
     }
 
     &__title {

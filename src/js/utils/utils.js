@@ -54,7 +54,7 @@ export const getFormatedDate = (date) => {
     } else if(daysPassed === 1) {
         return 'yesterday';
 
-    } else if(daysPassed > 7) {
+    } else if(daysPassed > 2) {
         return `${daysPassed} days ago`;
     }
 

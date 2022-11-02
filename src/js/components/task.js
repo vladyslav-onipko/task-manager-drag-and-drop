@@ -8,6 +8,7 @@ export default class Task {
         this.type = data.type;
         this.title = data.title;
         this.description = data.description;
+        this.deadline = data.deadline;
         this.formatedDate = data.formatedDate;
         this.createdDate = data.createdDate;
 
@@ -76,7 +77,8 @@ export default class Task {
             {
                 type: currTask.type, 
                 title: currTask.title, 
-                description: currTask.description, 
+                description: currTask.description,
+                deadline: data.deadline,
                 formatedDate: currTask.formatedDate,
                 createdDate: currTask.createdDate,
             });
@@ -94,7 +96,14 @@ export default class Task {
         const html = `
             <li class="task__item" id="${this.id}" draggable="true" data-created-date="${this.createdDate}">
                 <span class="task__icon fas fa-times js-remove"></span>
-                <span class="task__date">Posted: ${this.formatedDate}</span>
+                <div class="task__info">
+                    <p class="task__date">Posted: ${this.formatedDate}</p>
+                    <span class="task__separator" ${+this.deadline && this.type === 'active' ? 'style=display:block' : 'style=display:none'}>/</span>
+                    <p class="task__deadline" 
+                        ${+this.deadline && this.type === 'active' ? 'style=display:block' : 'style=display:none'}>
+                        ${this.deadline} ${+this.deadline === 1 ? 'day' : 'days'}
+                    </p>
+                </div>
                 <h4 class="task__item-title">${this.title}</h4>
                 <p class="task__item-description">${this.description}</p>
                 <div class="task__actions">

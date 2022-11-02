@@ -31,6 +31,12 @@
         padding: 10px;
         width: 100%;
 
+        &::placeholder {
+            font-family: $font-main;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
         &:focus {
             border-color: $color-green;
         }
@@ -38,11 +44,6 @@
         &.is-not-valid {
             border: 1px solid $color-red;
         }
-    }
-
-    &__input[type='radio'] {
-        cursor: pointer;
-        width: auto;
     }
 
     textarea {
