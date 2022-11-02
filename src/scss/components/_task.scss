@@ -23,14 +23,22 @@
     &__icon {
         cursor: pointer;
         position: absolute;
-        top: 10px;
         right: 15px;
-        transition: all .2 ease-in-out;
+        top: 10px;
+        transition: all .2ms ease-in-out;
 
         &:hover,
         &:focus {
             color: $color-green;
         }
+    }
+
+    &__date {
+        color: $color-gray;
+        font-size: 1.2rem;
+        position: absolute;
+        right: 40px;
+        top: 12px;
     }
 
     &__title {

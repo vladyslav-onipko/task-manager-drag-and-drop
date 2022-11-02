@@ -22,12 +22,12 @@ export default class Form {
         this.formValidationInputs = [...this.form.querySelectorAll(`.${this.options.classList.validationInputClass}`)];
 
         this.formValidation();
-        this._initEvents();
+        this._init();
     }
 
     submitBtn = null;
 
-    _initEvents() {
+    _init() {
         this.form.addEventListener('input', this.formValidation.bind(this));
     }
 

@@ -1,4 +1,4 @@
-import { getFromLocalStorage } from './utils/utils.js';
+import { getFromLocalStorage, getFormatedDate } from './utils/utils.js';
 
 import TaskList from './components/task-list.js';
 import Task from './components/task.js';
@@ -21,7 +21,12 @@ class App {
         if(keys.length) {
             keys.forEach(key => {
                 const data = getFromLocalStorage(key);
-                const task = new Task(key, data.type, data.title, data.description);
+                const newFormatedDate = getFormatedDate(data.createdDate); // get date text format
+                
+                data.id = key;
+                data.formatedDate = newFormatedDate;
+                
+                const task = new Task(data);
                 
                 if(task.type === activeTasksList.type) {
                     activeTasksList.tasks.push(task);

@@ -1,4 +1,4 @@
-import { genereteID, setToLocalStorage } from '../utils/utils.js';
+import { genereteID, setToLocalStorage, getFormatedDate, getCurrentDate } from '../utils/utils.js';
 
 import Task from "./task.js";
 import Form from './form.js';
@@ -26,10 +26,10 @@ export default class TaskList {
         this.form = new Form('js-add-form');
         this.listEl = this.options.DOMElements.section.querySelector(`.${this.options.classList.tasksListClass}`);
 
-        this.initEvents();
+        this.init();
     }
 
-    initEvents() {
+    init() {
         const addBtn = this.form.submitBtn;
         
         addBtn.addEventListener('click', this.newTaskHandler.bind(this, 'active'));
@@ -67,6 +67,8 @@ export default class TaskList {
     // add new task logic for active list only
     newTaskHandler(type) {
         if(this.type === type) {
+            const currDate = getCurrentDate(); // get current date with **/**/** format
+            const formatedDate = getFormatedDate(currDate); // get date text format
             const taskID = genereteID(5); // create unic id for new task
             const data = this.form.getData(); // getting data from add form fields
 
@@ -75,11 +77,22 @@ export default class TaskList {
                 type: type,
                 title: data.title,
                 description: data.description,
+                formatedDate: formatedDate,
+                createdDate: currDate,
             }
 
-            const task = new Task(taskData.id, taskData.type, taskData.title, taskData.description, this.tasks);
+            const task = new Task(taskData);
 
-            setToLocalStorage(taskData.id, {type: taskData.type, title: taskData.title, description: taskData.description}); // set data to local storage
+            // set data to local storage
+            setToLocalStorage(
+                taskData.id, 
+                {
+                    type: taskData.type, 
+                    title: taskData.title, 
+                    description: taskData.description, 
+                    formatedDate: taskData.formatedDate,
+                    createdDate: taskData.createdDate,
+                });
             
             this.tasks.push(task);
             this.renderTasks();
@@ -122,7 +135,15 @@ export default class TaskList {
         this.removeTask(moveTask.id, false);
         this.moveHandler(moveTask);
 
-        setToLocalStorage(moveTask.id, {type: moveTask.type, title: moveTask.title, description: moveTask.description});
+        setToLocalStorage(
+            moveTask.id, 
+            {
+                type: moveTask.type, 
+                title: moveTask.title, 
+                description: moveTask.description, 
+                formatedDate: moveTask.formatedDate, 
+                createdDate: moveTask.createdDate
+            });
     }
 
     _dragEnterHandler(e) {

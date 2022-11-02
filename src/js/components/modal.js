@@ -15,13 +15,13 @@ export default class ModalMenedger {
             }
         }
         
-        this._initEvents();
+        this._init();
     }
 
     currPopup = null;
     closeButton = null;
     
-    _initEvents() {
+    _init() {
         const siteMain = this.options.DOMElements.siteMain;
         const backdrop = this.options.DOMElements.backdrop;
 

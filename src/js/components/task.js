@@ -3,11 +3,13 @@ import { clearEvents, setToLocalStorage } from '../utils/utils.js'
 import Form from './form.js';
 
 export default class Task {
-    constructor(id, type, title, description) {
-        this.id = id;
-        this.type = type;
-        this.title = title;
-        this.description = description;
+    constructor(data) {
+        this.id = data.id;
+        this.type = data.type;
+        this.title = data.title;
+        this.description = data.description;
+        this.formatedDate = data.formatedDate;
+        this.createdDate = data.createdDate;
 
         this.options = {
             DOMElements: {},
@@ -27,7 +29,7 @@ export default class Task {
 
     taskEl = null;
 
-    initEvents(tasks, handler = {}) {
+    _init(tasks, handler = {}) {
         this.taskEl = document.getElementById(this.id);
 
         const removeBtn = this.taskEl.querySelector(`.${this.options.classList.removeTaskBtnClass}`);
@@ -69,7 +71,15 @@ export default class Task {
         currTask.title = taskTitleEl.textContent = newData.title;
         currTask.description = taskDescriptionEl.textContent = newData.description;
         
-        setToLocalStorage(currTask.id, {type: currTask.type, title: currTask.title, description: currTask.description});
+        setToLocalStorage(
+            currTask.id, 
+            {
+                type: currTask.type, 
+                title: currTask.title, 
+                description: currTask.description, 
+                formatedDate: currTask.formatedDate,
+                createdDate: currTask.createdDate,
+            });
 
         this.form.showSuccessMessage('updated');
         this.form.submitBtn.setAttribute('disabled', 'disabled');
@@ -82,8 +92,9 @@ export default class Task {
 
     create(anchor, options = {}) {
         const html = `
-            <li class="task__item" id="${this.id}" draggable="true">
+            <li class="task__item" id="${this.id}" draggable="true" data-created-date="${this.createdDate}">
                 <span class="task__icon fas fa-times js-remove"></span>
+                <span class="task__date">Posted: ${this.formatedDate}</span>
                 <h4 class="task__item-title">${this.title}</h4>
                 <p class="task__item-description">${this.description}</p>
                 <div class="task__actions">
@@ -94,7 +105,7 @@ export default class Task {
         `;
 
         anchor.insertAdjacentHTML('beforeend', html);
-        this.initEvents(options.tasksArr, options.callback);
+        this._init(options.tasksArr, options.callback);
     }
 
     
