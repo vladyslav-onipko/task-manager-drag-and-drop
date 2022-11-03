@@ -34,7 +34,7 @@ export const getCurrentDate = () => {
     const month = now.getMonth() + 1;
     const year = now.getFullYear();
 
-    return `${day}/${month}/${year}`;
+    return `${year}-${month}-${day}`;
 };
 
 export const calcDaysPassed = (date1, date2) => {
@@ -45,6 +45,7 @@ export const getFormatedDate = (date) => {
     const currDate = getCurrentDate();
     const date1 = new Date(currDate);
     const date2 = new Date(date);
+    console.log(date1, date2);
 
     const daysPassed = calcDaysPassed(date1, date2);
 
