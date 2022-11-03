@@ -45,7 +45,6 @@ export const getFormatedDate = (date) => {
     const currDate = getCurrentDate();
     const date1 = new Date(currDate);
     const date2 = new Date(date);
-    console.log(date1, date2);
 
     const daysPassed = calcDaysPassed(date1, date2);
 
@@ -58,6 +57,4 @@ export const getFormatedDate = (date) => {
     } else if(daysPassed > 2) {
         return `${daysPassed} days ago`;
     }
-
-    return daysPassed;
 }
