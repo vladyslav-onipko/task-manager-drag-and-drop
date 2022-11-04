@@ -28,8 +28,6 @@ export default class Task {
         this.form = new Form('js-edit-form');
 
         this.daysLeft = this._calcDeadline();
-
-        console.log(this.daysLeft);
     }
 
     taskEl = null;
