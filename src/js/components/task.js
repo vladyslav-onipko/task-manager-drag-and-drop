@@ -80,7 +80,7 @@ export default class Task {
                 type: currTask.type, 
                 title: currTask.title, 
                 description: currTask.description,
-                deadline: data.deadline,
+                deadline: currTask.deadline,
                 formatedDate: currTask.formatedDate,
                 createdDate: currTask.createdDate,
             });
