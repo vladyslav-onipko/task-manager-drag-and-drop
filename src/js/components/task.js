@@ -28,6 +28,7 @@ export default class Task {
         this.form = new Form('js-edit-form');
 
         this.daysLeft = this._calcDeadline();
+        
     }
 
     taskEl = null;
@@ -97,15 +98,18 @@ export default class Task {
     _calcDeadline() {
         if(this.deadline && this.deadline > 0) {
             const dayPosted = new Date(this.createdDate).getDate();
+            const dayDeadline = +this.deadline + dayPosted;
+            
             const now = new Date();
+            const dayNow = now.getDate();
             const monthNow = now.getMonth();
             const yearNow = now.getFullYear();
 
-            const dayFinish = +this.deadline + dayPosted;
-            const countDownDate = new Date(yearNow, monthNow, dayFinish);
+            const countDownDate = new Date(yearNow, monthNow, dayDeadline);
+            const dateNow = new Date(yearNow, monthNow, dayNow);
             // const test = new Date(yearNow, monthNow, 5); for deadline testing
 
-            let days = calcDateDifference(countDownDate, now, false);
+            let days = calcDateDifference(countDownDate, dateNow, false);
 
             days <= 0 ? days = 'lost all' : days = days;
 
