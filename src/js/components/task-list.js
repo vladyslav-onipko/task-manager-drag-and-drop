@@ -67,7 +67,7 @@ export default class TaskList {
     // add new task logic for active list only
     newTaskHandler(type) {
         if(this.type === type) {
-            const currDate = getCurrentDate(); // get current date with year-month-day format
+            const currDate = getCurrentDate(); // get current date string in year-month-day format
             const formatedDate = getFormatedDate(currDate); // get date text format
             const taskID = genereteID(5); // create unic id for new task
             const data = this.form.getData(); // getting data from add form fields

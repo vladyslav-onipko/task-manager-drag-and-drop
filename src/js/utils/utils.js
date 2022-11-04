@@ -37,8 +37,12 @@ export const getCurrentDate = () => {
     return `${year}-${month}-${day}`;
 };
 
-export const calcDaysPassed = (date1, date2) => {
-    return Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60* 24));
+export const calcDateDifference = (date1, date2, absValue = true) => {
+    if(absValue) {
+        return Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60* 24));
+    } else {
+        return Math.round((date1 - date2) / (1000 * 60 * 60* 24));
+    }
 };
 
 export const getFormatedDate = (date) => {
@@ -46,7 +50,7 @@ export const getFormatedDate = (date) => {
     const date1 = new Date(currDate);
     const date2 = new Date(date);
 
-    const daysPassed = calcDaysPassed(date1, date2);
+    const daysPassed = calcDateDifference(date1, date2);
 
     if(daysPassed === 0) {
         return 'today';

@@ -1,4 +1,4 @@
-import { clearEvents, setToLocalStorage } from '../utils/utils.js'
+import { clearEvents, setToLocalStorage, calcDateDifference } from '../utils/utils.js'
 
 import Form from './form.js';
 
@@ -26,6 +26,10 @@ export default class Task {
         }
 
         this.form = new Form('js-edit-form');
+
+        this.daysLeft = this._calcDeadline();
+
+        console.log(this.daysLeft);
     }
 
     taskEl = null;
@@ -92,16 +96,35 @@ export default class Task {
         e.dataTransfer.effectAllowed = 'move';
     }
 
+    _calcDeadline() {
+        if(this.deadline && this.deadline > 0) {
+            const dayPosted = new Date(this.createdDate).getDate();
+            const now = new Date();
+            const monthNow = now.getMonth();
+            const yearNow = now.getFullYear();
+
+            const dayFinish = +this.deadline + dayPosted;
+            const countDownDate = new Date(yearNow, monthNow, dayFinish);
+            // const test = new Date(yearNow, monthNow, 5); for deadline testing
+
+            let days = calcDateDifference(countDownDate, now, false);
+
+            days <= 0 ? days = 'lost all' : days = days;
+
+            return days;
+        }
+    }
+
     create(anchor, options = {}) {
         const html = `
-            <li class="task__item" id="${this.id}" draggable="true" data-created-date="${this.createdDate}">
+            <li class="task__item ${+this.daysLeft <= 3 && this.type === 'active' ? 'is-warning': ''}" id="${this.id}" draggable="true">
                 <span class="task__icon fas fa-times js-remove"></span>
                 <div class="task__info">
                     <p class="task__date">Posted: ${this.formatedDate}</p>
-                    <span class="task__separator" ${+this.deadline && this.type === 'active' ? 'style=display:block' : 'style=display:none'}>/</span>
+                    <span class="task__separator" ${this.daysLeft && this.type === 'active' ? 'style=display:block' : 'style=display:none'}>/</span>
                     <p class="task__deadline" 
-                        ${+this.deadline && this.type === 'active' ? 'style=display:block' : 'style=display:none'}>
-                        ${this.deadline} ${+this.deadline === 1 ? 'day' : 'days'}
+                        ${this.daysLeft && this.type === 'active' ? 'style=display:block' : 'style=display:none'}>
+                        ${this.daysLeft} ${+this.daysLeft === 1 ? 'day' : 'days'}
                     </p>
                 </div>
                 <h4 class="task__item-title">${this.title}</h4>
