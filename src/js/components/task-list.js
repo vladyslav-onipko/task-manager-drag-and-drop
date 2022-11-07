@@ -1,4 +1,4 @@
-import { genereteID, setToLocalStorage, getFormatedDate, getCurrentDate } from '../utils/utils.js';
+import { genereteID, setToLocalStorage } from '../utils/utils.js';
 
 import Task from "./task.js";
 import Form from './form.js';
@@ -26,10 +26,10 @@ export default class TaskList {
         this.form = new Form('js-add-form');
         this.listEl = this.options.DOMElements.section.querySelector(`.${this.options.classList.tasksListClass}`);
 
-        this.init();
+        this.initEvents();
     }
 
-    init() {
+    initEvents() {
         const addBtn = this.form.submitBtn;
         
         addBtn.addEventListener('click', this.newTaskHandler.bind(this, 'active'));
@@ -56,7 +56,8 @@ export default class TaskList {
                             removeTask: this.removeTask.bind(this),
                             moveTask: this.moveTask.bind(this),
                         }
-                    });
+                    }
+                );
             });
         } else {
             Task.createEmpty(this.listEl);
@@ -67,8 +68,6 @@ export default class TaskList {
     // add new task logic for active list only
     newTaskHandler(type) {
         if(this.type === type) {
-            const currDate = getCurrentDate(); // get current date string in year-month-day format
-            const formatedDate = getFormatedDate(currDate); // get date text format
             const taskID = genereteID(5); // create unic id for new task
             const data = this.form.getData(); // getting data from add form fields
 
@@ -78,23 +77,9 @@ export default class TaskList {
                 title: data.title,
                 description: data.description,
                 deadline: data.deadline,
-                formatedDate: formatedDate,
-                createdDate: currDate,
             }
 
             const task = new Task(taskData);
-
-            // set data to local storage
-            setToLocalStorage(
-                taskData.id, 
-                {
-                    type: taskData.type, 
-                    title: taskData.title, 
-                    description: taskData.description,
-                    deadline: data.deadline,
-                    formatedDate: taskData.formatedDate,
-                    createdDate: taskData.createdDate,
-                });
             
             this.tasks.push(task);
             this.renderTasks();
@@ -146,7 +131,8 @@ export default class TaskList {
                 deadline: moveTask.deadline,
                 formatedDate: moveTask.formatedDate, 
                 createdDate: moveTask.createdDate
-            });
+            }
+        );
     }
 
     _dragEnterHandler(e) {

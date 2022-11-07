@@ -1,4 +1,9 @@
-import { clearEvents, setToLocalStorage, calcDateDifference } from '../utils/utils.js'
+import { clearEvents, 
+    setToLocalStorage, 
+    calcDateDifference, 
+    getFormatedDate, 
+    getCurrentDate,
+} from '../utils/utils.js'
 
 import Form from './form.js';
 
@@ -9,8 +14,6 @@ export default class Task {
         this.title = data.title;
         this.description = data.description;
         this.deadline = data.deadline;
-        this.formatedDate = data.formatedDate;
-        this.createdDate = data.createdDate;
 
         this.options = {
             DOMElements: {},
@@ -26,14 +29,28 @@ export default class Task {
         }
 
         this.form = new Form('js-edit-form');
-
-        this.daysLeft = this._calcDeadline();
         
+        this.createdDate = getCurrentDate(); // get current date string in year-month-day format
+        this.formatedDate = getFormatedDate(this.createdDate); // get date text format
+        this.daysLeft = this._calcDeadline();
+
+        // set data to local storage
+        setToLocalStorage(
+            this.id, 
+            {
+                type: this.type, 
+                title: this.title, 
+                description: this.description,
+                deadline: this.deadline,
+                formatedDate: this.formatedDate,
+                createdDate: this.createdDate,
+            }
+        );
     }
 
     taskEl = null;
 
-    _init(tasks, handler = {}) {
+    _initEvents(tasks, handler = {}) {
         this.taskEl = document.getElementById(this.id);
 
         const removeBtn = this.taskEl.querySelector(`.${this.options.classList.removeTaskBtnClass}`);
@@ -84,10 +101,11 @@ export default class Task {
                 deadline: currTask.deadline,
                 formatedDate: currTask.formatedDate,
                 createdDate: currTask.createdDate,
-            });
+            }
+        );
 
-        this.form.showSuccessMessage('updated');
         this.form.submitBtn.setAttribute('disabled', 'disabled');
+        this.form.showSuccessMessage('updated');
     }
 
     dragHandler(e) {
@@ -139,7 +157,7 @@ export default class Task {
         `;
 
         anchor.insertAdjacentHTML('beforeend', html);
-        this._init(options.tasksArr, options.callback);
+        this._initEvents(options.tasksArr, options.callback);
     }
 
     
