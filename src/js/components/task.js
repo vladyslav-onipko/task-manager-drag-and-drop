@@ -1,9 +1,4 @@
-import { clearEvents, 
-    setToLocalStorage, 
-    calcDateDifference, 
-    getFormatedDate, 
-    getCurrentDate,
-} from '../utils/utils.js'
+import { clearEvents, setToLocalStorage, calcDateDifference } from '../utils/utils.js'
 
 import Form from './form.js';
 
@@ -14,6 +9,8 @@ export default class Task {
         this.title = data.title;
         this.description = data.description;
         this.deadline = data.deadline;
+        this.formatedDate = data.formatedDate;
+        this.createdDate = data.createdDate;
 
         this.options = {
             DOMElements: {},
@@ -30,22 +27,7 @@ export default class Task {
 
         this.form = new Form('js-edit-form');
         
-        this.createdDate = getCurrentDate(); // get current date string in year-month-day format
-        this.formatedDate = getFormatedDate(this.createdDate); // get date text format
         this.daysLeft = this._calcDeadline();
-
-        // set data to local storage
-        setToLocalStorage(
-            this.id, 
-            {
-                type: this.type, 
-                title: this.title, 
-                description: this.description,
-                deadline: this.deadline,
-                formatedDate: this.formatedDate,
-                createdDate: this.createdDate,
-            }
-        );
     }
 
     taskEl = null;

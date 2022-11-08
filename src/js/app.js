@@ -14,7 +14,6 @@ class App {
         activeTasksList.initMoveTaskHandler(finishedTasksList.switchTask.bind(finishedTasksList));
         finishedTasksList.initMoveTaskHandler(activeTasksList.switchTask.bind(activeTasksList));
 
-
         // parsing and rendering tasks from local storage depending on list type
         const keys = Object.keys(localStorage);
 

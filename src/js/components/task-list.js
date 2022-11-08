@@ -1,4 +1,4 @@
-import { genereteID, setToLocalStorage } from '../utils/utils.js';
+import { genereteID, setToLocalStorage, getFormatedDate, getCurrentDate } from '../utils/utils.js';
 
 import Task from "./task.js";
 import Form from './form.js';
@@ -68,6 +68,8 @@ export default class TaskList {
     // add new task logic for active list only
     newTaskHandler(type) {
         if(this.type === type) {
+            const createdDate = getCurrentDate(); // get current date string in year-month-day format
+            const formatedDate = getFormatedDate(createdDate); // get date text format
             const taskID = genereteID(5); // create unic id for new task
             const data = this.form.getData(); // getting data from add form fields
 
@@ -77,9 +79,24 @@ export default class TaskList {
                 title: data.title,
                 description: data.description,
                 deadline: data.deadline,
+                createdDate: createdDate,
+                formatedDate: formatedDate,
             }
 
             const task = new Task(taskData);
+
+            // set data to local storage
+            setToLocalStorage(
+                taskData.id, 
+                {
+                    type: taskData.type, 
+                    title: taskData.title, 
+                    description: taskData.description,
+                    deadline: data.deadline,
+                    formatedDate: taskData.formatedDate,
+                    createdDate: taskData.createdDate,
+                }
+            );
             
             this.tasks.push(task);
             this.renderTasks();
